@@ -1,0 +1,174 @@
+{
+    "name": "profiler-powered-by-scalene",
+    "displayName": "Profiler Powered by Scalene",
+    "description": "AI-powered CPU+GPU+memory profiler for Python with memory leak detection - powered by Scalene",
+    "version": "0.1.1",
+    "publisher": "WaYdotNET",
+    "author": {
+        "name": "Carlo Bertini",
+        "url": "https://github.com/WaYdotNET"
+    },
+    "license": "Apache-2.0",
+    "icon": "images/icon.png",
+    "homepage": "https://github.com/WaYdotNET/profiler-powered-by-scalene",
+    "bugs": {
+        "url": "https://github.com/WaYdotNET/profiler-powered-by-scalene/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/WaYdotNET/profiler-powered-by-scalene"
+    },
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Debuggers",
+        "Programming Languages",
+        "Other"
+    ],
+    "keywords": [
+        "python",
+        "profiler",
+        "scalene",
+        "memory",
+        "cpu",
+        "gpu",
+        "performance",
+        "memory leak",
+        "optimization"
+    ],
+    "activationEvents": [
+        "onLanguage:python"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "profilerScalene.profile",
+                "title": "Profiler: Profile Current File",
+                "icon": "$(flame)"
+            },
+            {
+                "command": "profilerScalene.profileMemory",
+                "title": "Profiler: Profile Memory Only",
+                "icon": "$(database)"
+            },
+            {
+                "command": "profilerScalene.profileRegion",
+                "title": "Profiler: Profile Selected Code",
+                "icon": "$(selection)"
+            },
+            {
+                "command": "profilerScalene.viewProfile",
+                "title": "Profiler: View Last Profile",
+                "icon": "$(graph)"
+            },
+            {
+                "command": "profilerScalene.viewInBrowser",
+                "title": "Profiler: Open in Scalene Web Viewer",
+                "icon": "$(globe)"
+            },
+            {
+                "command": "profilerScalene.stop",
+                "title": "Profiler: Stop Profiling",
+                "icon": "$(debug-stop)"
+            },
+            {
+                "command": "profilerScalene.install",
+                "title": "Profiler: Install Scalene",
+                "icon": "$(cloud-download)"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceLangId == python",
+                    "command": "profilerScalene.profile",
+                    "group": "navigation"
+                }
+            ],
+            "editor/context": [
+                {
+                    "when": "resourceLangId == python",
+                    "command": "profilerScalene.profile",
+                    "group": "1_profilerScalene@1"
+                },
+                {
+                    "when": "resourceLangId == python && editorHasSelection",
+                    "command": "profilerScalene.profileRegion",
+                    "group": "1_profilerScalene@2"
+                },
+                {
+                    "when": "resourceLangId == python",
+                    "command": "profilerScalene.profileMemory",
+                    "group": "1_profilerScalene@3"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "when": "resourceLangId == python",
+                    "command": "profilerScalene.profile",
+                    "group": "1_profilerScalene"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Profiler Powered by Scalene",
+            "properties": {
+                "profilerScalene.pythonPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to Python interpreter. Leave empty to auto-detect."
+                },
+                "profilerScalene.cpuSamplingRate": {
+                    "type": "number",
+                    "default": 0.01,
+                    "description": "CPU sampling rate in seconds"
+                },
+                "profilerScalene.reducedProfile": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Only show lines with significant CPU/memory usage"
+                },
+                "profilerScalene.outputDirectory": {
+                    "type": "string",
+                    "default": ".scalene-profiles",
+                    "description": "Directory to store profile outputs"
+                },
+                "profilerScalene.autoOpenViewer": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Automatically open profile viewer after profiling"
+                },
+                "profilerScalene.showMemoryLeaks": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight likely memory leaks in the profile viewer"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "lint": "eslint src --ext ts",
+        "lint:fix": "eslint src --ext ts --fix",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "test": "node ./out/test/runTest.js",
+        "package": "npm run compile && vsce package",
+        "publish:ovsx": "ovsx publish"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.0",
+        "@types/vscode": "^1.74.0",
+        "@typescript-eslint/eslint-plugin": "^6.13.0",
+        "@typescript-eslint/parser": "^6.13.0",
+        "@vscode/vsce": "^2.22.0",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "ovsx": "^0.8.3",
+        "prettier": "^3.2.0",
+        "typescript": "^5.3.0"
+    }
+}
